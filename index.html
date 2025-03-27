@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio - Imię Nazwisko</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cinzel', serif;
+      background-color: #0a0a0a;
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .landing {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      position: relative;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .name {
+      font-size: 3em;
+      margin-bottom: 1em;
+      z-index: 2;
+    }
+
+    .menu-right {
+      position: absolute;
+      right: 2em;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      z-index: 2;
+    }
+
+    .menu-right button, .menu-top button {
+      background: none;
+      border: 1px solid white;
+      color: white;
+      padding: 0.5em 1em;
+      font-size: 1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .menu-right button:hover, .menu-top button:hover {
+      background-color: white;
+      color: #0a0a0a;
+    }
+
+    .menu-top {
+      position: fixed;
+      top: 1em;
+      right: 1em;
+      display: none;
+      gap: 1em;
+      z-index: 3;
+    }
+
+    .section {
+      display: none;
+      padding: 4em 2em;
+    }
+
+    .visible {
+      display: block;
+    }
+
+    .fade-out {
+      animation: fadeOut 1s forwards;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="landing" id="landing">
+    <div class="name">Imię Nazwisko</div>
+    <div class="menu-right">
+      <button onclick="navigateTo('gallery')">Galeria</button>
+      <button onclick="navigateTo('contact')">Kontakt</button>
+    </div>
+  </div>
+
+  <div class="menu-top" id="menuTop">
+    <button onclick="navigateTo('gallery')">Galeria</button>
+    <button onclick="navigateTo('contact')">Kontakt</button>
+  </div>
+
+  <div class="section" id="gallery">
+    <h2>Galeria</h2>
+    <p>Tutaj będą prace...</p>
+  </div>
+
+  <div class="section" id="contact">
+    <h2>Kontakt</h2>
+    <p>Email: twoj@email.com</p>
+  </div>
+
+  <script>
+    function navigateTo(sectionId) {
+      const landing = document.getElementById('landing');
+      const menuTop = document.getElementById('menuTop');
+      const sections = document.querySelectorAll('.section');
+
+      // Ukryj landing page z animacją
+      landing.classList.add('fade-out');
+
+      setTimeout(() => {
+        landing.style.display = 'none';
+        menuTop.style.display = 'flex';
+
+        // Pokaż odpowiednią sekcję
+        sections.forEach(sec => sec.classList.remove('visible'));
+        document.getElementById(sectionId).classList.add('visible');
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
