@@ -121,10 +121,34 @@
   </div>
 
   <script>
+      function loadGalleryImages() {
+        const galleryGrid = document.getElementById('galleryGrid');
+        if (galleryGrid.children.length > 0) return; // Nie ładuj ponownie
+      
+        fetch('images.json')
+          .then(response => response.json())
+          .then(images => {
+            images.forEach(src => {
+              const img = document.createElement('img');
+              img.src = src;
+              img.alt = src.split('/').pop();
+              galleryGrid.appendChild(img);
+            });
+          })
+          .catch(error => {
+            console.error("Nie udało się załadować galerii:", error);
+            galleryGrid.innerHTML = "<p>Nie udało się załadować obrazów.</p>";
+          });
+      }
+    
     function navigateTo(sectionId) {
       const landing = document.getElementById('landing');
       const menuTop = document.getElementById('menuTop');
       const sections = document.querySelectorAll('.section');
+
+      if (sectionId === 'gallery') {
+        loadGalleryImages();
+      }
 
       // Ukryj landing page z animacją
       landing.classList.add('fade-out');
