@@ -19,7 +19,7 @@
       background-color: #0a0a0a;
       color: white;
       height: 100vh;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     .landing {
@@ -93,6 +93,19 @@
         transform: scale(0.95);
       }
     }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1em;
+      margin-top: 2em;
+    }
+
+    .gallery-grid img {
+      width: 100%;
+      height: auto;
+      border: 1px solid white;
+    }
   </style>
 </head>
 <body>
@@ -111,8 +124,7 @@
 
   <div class="section" id="gallery">
     <h2>All pictures here are subject of Copy Rights owned by Maciej Turchan</h2>
-  <div class="gallery-grid" id="galleryGrid"></div>
-
+    <div class="gallery-grid" id="galleryGrid"></div>
   </div>
 
   <div class="section" id="contact">
@@ -121,46 +133,44 @@
   </div>
 
   <script>
-      function loadGalleryImages() {
-        const galleryGrid = document.getElementById('galleryGrid');
-        if (galleryGrid.children.length > 0) return; // Nie ładuj ponownie
-      
-        fetch('images.json')
-          .then(response => response.json())
-          .then(images => {
-            images.forEach(src => {
-              const img = document.createElement('img');
-              img.src = src;
-              img.alt = src.split('/').pop();
-              galleryGrid.appendChild(img);
-            });
-          })
-          .catch(error => {
-            console.error("Nie udało się załadować galerii:", error);
-            galleryGrid.innerHTML = "<p>Nie udało się załadować obrazów.</p>";
-          });
-      }
-    
     function navigateTo(sectionId) {
       const landing = document.getElementById('landing');
       const menuTop = document.getElementById('menuTop');
       const sections = document.querySelectorAll('.section');
 
-      if (sectionId === 'gallery') {
-        loadGalleryImages();
-      }
-
-      // Ukryj landing page z animacją
       landing.classList.add('fade-out');
 
       setTimeout(() => {
         landing.style.display = 'none';
         menuTop.style.display = 'flex';
-
-        // Pokaż odpowiednią sekcję
         sections.forEach(sec => sec.classList.remove('visible'));
         document.getElementById(sectionId).classList.add('visible');
+
+        if (sectionId === 'gallery') {
+          loadGalleryImages();
+          document.body.style.overflowY = 'auto';
+        }
       }, 1000);
+    }
+
+    function loadGalleryImages() {
+      const galleryGrid = document.getElementById('galleryGrid');
+      if (galleryGrid.children.length > 0) return; // Nie ładuj ponownie
+
+      fetch('images.json')
+        .then(response => response.json())
+        .then(images => {
+          images.forEach(src => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = src.split('/').pop();
+            galleryGrid.appendChild(img);
+          });
+        })
+        .catch(error => {
+          console.error("Nie udało się załadować galerii:", error);
+          galleryGrid.innerHTML = "<p>Nie udało się załadować obrazów.</p>";
+        });
     }
   </script>
 </body>
